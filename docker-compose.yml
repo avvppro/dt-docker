@@ -1,0 +1,34 @@
+version: '3.1'
+
+networks:
+  vpcbr:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: ${SUB_CIDR}
+services:
+    database:
+        container_name: database
+        image: mysql:5.7.31
+        restart: always
+        ports:
+         - ${DB_PORTS}
+        environment:
+          MYSQL_ROOT_PASSWORD: ${DB_ROOT_PWD}
+          MYSQL_DATABASE: ${DB_NAME}
+          MYSQL_USER: ${DB_USER}
+          MYSQL_PASSWORD: ${DB_USER_PASS}
+        volumes:
+        - ./db_dump:/docker-entrypoint-initdb.d
+        - ./db_data:/var/lib/mysql
+        networks:
+          vpcbr:
+            ipv4_address: ${DB_IP}
+    app:
+      build: ./app/
+      ports:
+      - ${APP_PORTS}
+      networks:
+        vpcbr:
+          ipv4_address: ${APP_IP}
+
