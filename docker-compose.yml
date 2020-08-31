@@ -31,4 +31,8 @@ services:
       networks:
         vpcbr:
           ipv4_address: ${APP_IP}
-
+    balancer:
+      build: ./balancer/
+      networks:
+        vpcbr:
+          ipv4_address: ${BALANCER_IP}

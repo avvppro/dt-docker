@@ -1,7 +1,6 @@
-FROM alpine
+FROM alpine:3.12.0
 # Upgrade existing packages in the base image
-RUN apk update 
-RUN apk --no-cache upgrade
+RUN apk update && apk --no-cache upgrade
 # Creat directory for apache2 to store PID file
 RUN mkdir /run/apache2
 # Install from packages with out caching install files
@@ -11,13 +10,13 @@ RUN apk add --no-cache sed openrc apache2 php7-apache2 libmcrypt-dev php7 php7-f
 RUN rc-update add php-fpm7 default
 # Run httpd in foreground so that the container does not quit
 CMD ["-D","FOREGROUND"]
-# Srart httpd when container runs
+# Start httpd when container runs
 ENTRYPOINT ["/usr/sbin/httpd"]
 # Apache2 config file
 COPY ./httpd.conf /etc/apache2/httpd.conf
 # Copy backend files
 COPY backend/ /var/www/localhost/htdocs/dtapi
-# Copy frontend files
+# Copy frontend files (build vs 172.33.0.5/dtapi & no .htaccess)
 COPY frontend/ /var/www/localhost/htdocs/
 # Acess for web users
 RUN chown apache. -R /var/www/localhost/htdocs/
