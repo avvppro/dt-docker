@@ -1,4 +1,4 @@
 .env
 db_data
-app/backend
-app/frontend
+be/artefact
+fe/artefact

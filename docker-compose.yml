@@ -24,13 +24,20 @@ services:
         networks:
           vpcbr:
             ipv4_address: ${DB_IP}
-    app:
-      build: ./app/
+    backend:
+      build: ./be/
       ports:
-      - ${APP_PORTS}
+      - ${BE_PORTS}
       networks:
         vpcbr:
-          ipv4_address: ${APP_IP}
+          ipv4_address: ${BE_IP}
+    frontend:
+      build: ./fe/
+      ports:
+      - ${FE_PORTS}
+      networks:
+        vpcbr:
+          ipv4_address: ${FE_IP}
     balancer:
       build: ./balancer/
       networks:
