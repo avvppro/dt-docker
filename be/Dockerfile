@@ -7,7 +7,8 @@ RUN apk add --no-cache openrc apache2 php7-apache2 libmcrypt-dev php7 php7-fpm p
 # Add php-fpm7 to autostart
 RUN rc-update add php-fpm7 default
 # Apache2 config file (Allow ovverride + mod_rewrite enable)
-COPY ./httpd.conf /etc/apache2/httpd.conf
+RUN sed -i '265s/AllowOverride None/AllowOverride All/g' /etc/apache2/httpd.conf 
+RUN sed -i "s%#LoadModule rewrite_module%LoadModule rewrite_module%g" /etc/apache2/httpd.conf
 # Copy backend files
 COPY artefact/ /var/www/localhost/htdocs/dtapi
 # Acess for web users
