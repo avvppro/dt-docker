@@ -25,14 +25,16 @@ services:
           vpcbr:
             ipv4_address: ${DB_IP}
     backend:
-      build: ./be/
+      container_name: backend
+      image: avvppro/dtester:dtester_backend
       ports:
       - ${BE_PORTS}
       networks:
         vpcbr:
           ipv4_address: ${BE_IP}
     frontend:
-      build: ./fe/
+      container_name: frontend
+      image: avvppro/dtester:dtester_frontend
       ports:
       - ${FE_PORTS}
       networks:
